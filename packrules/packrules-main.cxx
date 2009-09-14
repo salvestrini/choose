@@ -28,7 +28,7 @@
 #include <string>
 #include <list>
 
-#include "include/config.h"
+#include "config.h"
 
 #include "packrules/packrules-common.h"
 #include "packrules/packrules-stream.h"
