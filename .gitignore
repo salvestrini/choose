@@ -26,8 +26,8 @@ Makefile
 /choose
 /choose.sh
 
-/lkc/conf
-/lkc/mconf
+/lkc/choose-text
+/lkc/choose-ncurses
 /lkc/zconf-parser.output
 /lkc/zconf-parser.c
 /lkc/zconf-parser.h
