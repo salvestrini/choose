@@ -1,0 +1,11 @@
+GUILE_TOOLS="`optional guile-tools`"               || \
+    { echo "Missing tool: guile-tools"; exit 1; }
+PYTHON_AUTOFRISK="`optional python-autofrisk`"     || \
+    { echo "Missing tool: python-autofrisk"; exit 1; }
+PERL_AUTOFRISK="`optional perl-autofrisk`"         || \
+    { echo "Missing tool: perl-autofrisk"; exit 1; }
+
+BOOTSTRAPS=""
+GNULIB_MODULES=""
+GNULIB_DOC="INSTALL COPYINGv2"
+GNULIB_BUILDAUX="git-version-gen gitlog-to-changelog announce-gen"

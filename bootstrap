@@ -1,0 +1,253 @@
+#!/bin/sh
+
+#
+# bootstrap
+#
+# Copyright (C) 2008, 2009 Francesco Salvestrini
+#                          Alessandro Massignan
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+
+ME=bootstrap
+
+#
+# Internal functions
+#
+missing ()
+{
+    PROGRAM=$1
+    if test x"$PROGRAM" = x""; then
+        return 1
+    fi
+
+    IFS=":"
+
+    for i in $PATH
+    do
+        test -f $i/$PROGRAM && { echo $i/$PROGRAM; return 0 ; }
+    done
+
+    return 1
+}
+
+dummy_call ()
+{
+    case $1 in
+        --version) echo "internal"      ;;
+        *)         echo "dummy-call $@" ;;
+    esac
+
+    return 0
+}
+
+optional ()
+{
+    PROGRAM=$1
+    if test "x${PROGRAM}" = "x"; then
+        return 1
+    fi
+
+    IFS=":"
+
+    for i in $PATH
+    do
+        test -f $i/$PROGRAM && { echo $i/$PROGRAM; return 0 ; }
+    done
+
+    echo "dummy_call $PROGRAM"
+
+    return 0
+}
+
+required ()
+{
+    PROGRAM=$1
+    if test "x${PROGRAM}" = "x"; then
+        return 1
+    fi
+
+    X=`missing ${PROGRAM}` && { echo $X; return 0 ; }
+
+    return 1
+}
+
+log ()
+{
+    echo "$ME: $1"
+}
+
+#
+# Start
+#
+DOT_BOOTSTRAP="`pwd`/.bootstrap"
+if test ! -r $DOT_BOOTSTRAP; then
+    log "Missing file \`${DOT_BOOTSTRAP}'"
+    exit 1
+fi
+source $DOT_BOOTSTRAP
+
+#
+# External tools
+#
+GNULIBTOOL="`optional gnulib-tool`"
+log "GNULIBTOOL = $GNULIBTOOL"
+
+AUTORECONF="`required autoreconf`" || {
+    log "Missing tool: autoreconf"
+    exit 1
+}
+log "AUTORECONF = $AUTORECONF"
+
+#
+# Dump some useful informations
+#
+log "Dumping build-tools information ..."
+for tool in                                     \
+    "$AUTORECONF"                               \
+    "$GNULIBTOOL"                               \
+                                                \
+    "$GUILE_TOOLS"                              \
+    "$PYTHON_AUTOFRISK"                         \
+    "$PERL_AUTOFRISK"                           \
+    ;                                           \
+do
+    if test -n "$tool" ; then
+        VERSION=`$tool --version | head -1`
+        log " $tool -> $VERSION"
+    fi
+done
+
+#
+# Autofrisk modules
+#
+if test -e ./python.af ; then
+    log "Python autofrisk ..."
+    $PYTHON_AUTOFRISK ./python.af && \
+        cat ./python.af.m4 > ./tools/autotools/m4/python-autofrisk-data.m4 && \
+        rm -f ./python.af.m4 || {
+        log "Problems during python-autofrisk run'"
+        rm -f ./python.af.m4
+        rm -f ./tools/autotools/m4/python-autofrisk-data.m4
+        exit 1
+    }
+fi
+if test -e ./perl.af ; then
+    log "Perl autofrisk ..."
+    $PERL_AUTOFRISK ./perl.af && \
+        cat ./perl.af.m4 > ./tools/autotools/m4/perl-autofrisk-data.m4 && \
+        rm -f ./perl.af.m4 || {
+        log "Problems during perl-autofrisk run'"
+        rm -f ./perl.af.m4
+        rm -f ./tools/autotools/m4/perl-autofrisk-data.m4
+        exit 1
+    }
+fi
+if test -e ./guile.af ; then
+    log "Guile autofrisk ..."
+    $GUILE_TOOLS autofrisk ./guile.af && \
+        cat ./guile.af.m4 | sed -e 's/AUTOFRISK_/GUILE_AUTOFRISK_/g' > ./tools/autotools/m4/guile-autofrisk-data.m4 && \
+        rm -f ./guile.af.m4 || {
+        log "Problems during guile-autofrisk run'"
+        rm -f ./guile.af.m4
+        rm -f ./tools/autotools/m4/guile-autofrisk-data.m4
+        exit 1
+    }
+fi
+
+#
+# Gather AC_CONFIG_AUX_DIR directly from configure.ac
+#
+AC_CONFIG_AUX_DIR=`cat configure.ac|grep AC_CONFIG_AUX_DIR|sed -e 's,^.*\[,,' | sed -e 's,\].*,,'`
+if test -z "$AC_CONFIG_AUX_DIR" ; then
+    log "Cannot retrieve AC_CONFIG_AUX_DIR value from configure.ac"
+    exit 1
+fi
+
+#
+# Remove files left from the previous run
+#
+log "Removing autotools related files and directories ..."
+rm -f  `find ./ -name "Makefile.in"`                 || exit 1
+rm -f  config.cache aclocal.m4 config.h.in configure || exit 1
+rm -f  config.guess config.sub                       || exit 1
+rm -f  libtool $AC_CONFIG_AUX_DIR/ltmain.sh          || exit 1
+rm -rf autom4te.cache                                || exit 1
+rm -rf `find ./ -name ".deps"`                       || exit 1
+
+#
+# Call gnulib
+#
+GNULIBTOOL_AUXDIR=./tools/maint
+GNULIBTOOL_FLAGS="
+        --lgpl
+        --no-changelog
+        --macro-prefix GNULIB
+        --no-vc-files
+        --aux-dir=$GNULIBTOOL_AUXDIR
+        --m4-base=./tools/autotools/m4
+        --source-base=./src/gnulib
+"
+
+if test -n "$GNULIB_MODULES" ; then
+    log "Calling gnulib-tool (importing modules $GNULIB_MODULES)"
+    rm -r -f ./src/gnulib
+    $GNULIBTOOL $GNULIBTOOL_FLAGS --import $GNULIB_MODULES || {
+        log "Problems running gnulib-tool'"
+        exit 1
+    }
+fi
+
+log "Copying files from gnulib"
+for i in $GNULIB_BUILDAUX
+do
+    $GNULIBTOOL $GNULIBTOOL_FLAGS --copy-file build-aux/$i $GNULIBTOOL_AUXDIR/$i || {
+        log "Cannot copy gnulib $i file into $GNULIBTOOL_AUXDIR directory"
+        exit 1
+    }
+done
+$GNULIBTOOL $GNULIBTOOL_FLAGS --copy-file doc/INSTALL   INSTALL && \
+    $GNULIBTOOL $GNULIBTOOL_FLAGS --copy-file doc/COPYINGv2 COPYING || {
+    log "Cannot copy doc files from gnulib"
+    exit 1
+}
+
+#
+# bootstrap other packages
+#
+for i in $BOOTSTRAPS
+do
+    j=`dirname $i`
+    k=`basename $i`
+    (cd $j && if test -x $k ; then ./$k ; else sh ./$k ; fi) || {
+        log "Cannot call $k inside $j directory"
+        exit 1
+    }
+done
+
+#
+# autoreconf
+#
+log "Running autoreconf (autoreconf extra flags $AUTORECONF_FLAGS)..."
+$AUTORECONF \
+    --force \
+    --install \
+    --warnings=all \
+    $AUTORECONF_FLAGS || {
+    log "Problems during auto-reconfiguration'"
+    exit 1
+}
+
+exit 0

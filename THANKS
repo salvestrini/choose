@@ -1,0 +1,37 @@
+I would thank the following peoples (that helped/inspired me):
+
+* BusyBox people 
+	For their lkc changes.
+
+* Flex & Bison authors (all of them of course ;-))
+
+* Roman Zippel
+	For his lkc (linux kernel conf)
+
+* Joe Orton
+	For his configure.ac/VERSION trick (as seen on his sitecopy) that 
+	we have adopted.
+
+* David J. MacKenzie and Paul Eggbert
+        For their 'ifnames' script that inspired the 'scanconditional.pl'
+	script.
+
+* David J. MacKenzie and Akim Demaille
+	For autoconf.
+
+* Roland McGrath
+	For autoheader.
+
+* Peter Miller
+	For the "Recursive Make considered harmuful" document 
+	(Miller, P.A. (1998), Recursive Make Considered Harmuful, AUUGN
+	Journal of AUUG Inc, 19(1), pp. 14-25).
+
+* Eric S. Raymond
+	For his Configuration Menu Language version 2 (AKA CML2). 
+
+* The gcc, make, automake, autoconf etc. authors and supporters
+	For their great work.
+
+	Thank you all,
+		Francesco
