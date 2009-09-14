@@ -25,8 +25,8 @@ AUTOMAKE_OPTIONS = subdir-objects
 COMMONCFLAGS   = 
 COMMONCPPFLAGS =				\
 	-Wall -Werror				\
-	-I$(top_srcdir)/include			\
-	-I$(top_builddir)/include		\
+	-I$(top_srcdir)/lkc			\
+	-I$(top_builddir)/lkc			\
 	-I$(top_srcdir)				\
 	-I$(top_builddir)
 COMMONCXXFLAGS = 

@@ -33,6 +33,7 @@ AC_PREREQ(2.64)
 AC_CONFIG_SRCDIR([choose.sh.in])
 AC_CONFIG_AUX_DIR([tools/autotools])
 AC_CONFIG_MACRO_DIR([tools/autotools/m4])
+AC_CONFIG_HEADERS([lkc/config.h])
 
 AC_CANONICAL_BUILD
 AC_CANONICAL_HOST
@@ -97,13 +98,6 @@ AX_PROG_BISON([
   ])
 ])
 AC_SUBST(YACC_FLAGS)
-
-
-#
-# Autoheader support
-#
-AC_CONFIG_HEADERS([include/config.h])
-
 
 #
 # LKC support

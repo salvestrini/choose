@@ -33,12 +33,11 @@ Makefile
 /lkc/zconf-parser.h
 /lkc/zconf-scanner.c
 /lkc/lkc_defs.h
+/lkc/config.h.in
+/lkc/config.h
+/lkc/stamp-h1
 
 /packrules/packrules
-
-/include/config.h.in
-/include/config.h
-/include/stamp-h1
 
 /tools/autotools/compile
 /tools/autotools/config.guess
