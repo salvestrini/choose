@@ -20,7 +20,7 @@
 
 include $(top_srcdir)/Makefile.sub
 
-noinst_PROGRAMS = packrules
+bin_PROGRAMS = choose-packrules
 
 COMMONCFLAGS   =
 COMMONCPPFLAGS =				\
@@ -32,18 +32,18 @@ COMMONCPPFLAGS =				\
 COMMONCXXFLAGS = 
 COMMONLDADD    =
 
-packrules_SOURCES  =				\
+choose_packrules_SOURCES  =			\
 	packrules-stream.h			\
 	packrules-stream.cxx			\
 	packrules-common.h			\
 	packrules-common.cxx			\
 	packrules-main.cxx
 
-packrules_CFLAGS   = $(COMMONCFLAGS)
+choose_packrules_CFLAGS   = $(COMMONCFLAGS)
 
 ## XXX FIXME: We should include another directory instead ...
-packrules_CPPFLAGS = $(COMMONCPPFLAGS)
-packrules_CXXFLAGS = $(COMMONCXXFLAGS)
+choose_packrules_CPPFLAGS = $(COMMONCPPFLAGS)
+choose_packrules_CXXFLAGS = $(COMMONCXXFLAGS)
 
 FAIL_TESTS    =
 
