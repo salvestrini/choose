@@ -37,7 +37,7 @@ Makefile
 /lkc/config.h
 /lkc/stamp-h1
 
-/packrules/packrules
+/packrules/choose-packrules
 
 /tools/autotools/compile
 /tools/autotools/config.guess
