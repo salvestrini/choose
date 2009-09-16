@@ -3,6 +3,21 @@
 	Nameless dnt database
 	<entry priority="veryhigh" start="1253131198">
 		Release 0.1.0
+		<entry priority="high" start="1253138762">
+			Update build
+			<entry priority="high" start="1253138762">
+				Fix package version in order to handle git versioning
+			</entry>
+			<entry priority="high" start="1253138762">
+				Move internal macros to build-utils package
+			</entry>
+			<entry priority="high" start="1253138762">
+				Create AX_PACKAGE_API macro
+				<entry priority="high" start="1253138763">
+					Update configure.ac replacing API-handling with AX_PACKAGE_API
+				</entry>
+			</entry>
+		</entry>
 	</entry>
 	<entry priority="high" start="1253131201">
 		Release 0.2.0
