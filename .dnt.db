@@ -1,1 +1,16 @@
-<root>Nameless dnt database</root>
+<?xml version="1.0" ?>
+<root>
+	Nameless dnt database
+	<entry priority="veryhigh" start="1253131198">
+		Release 0.1.0
+	</entry>
+	<entry priority="high" start="1253131201">
+		Release 0.2.0
+	</entry>
+	<entry priority="medium" start="1253131202">
+		Release 0.3.0
+	</entry>
+	<entry priority="low" start="1253131214">
+		Release 0.4.0
+	</entry>
+</root>
