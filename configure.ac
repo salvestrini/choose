@@ -115,7 +115,6 @@ AC_CONFIG_FILES([
 	Makefile
 	docs/Makefile
 	lkc/Makefile
-	packrules/Makefile
 	tools/Makefile
 	tools/maint/Makefile
 	tools/autotools/Makefile

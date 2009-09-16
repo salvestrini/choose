@@ -31,7 +31,6 @@ ACLOCAL_AMFLAGS = -I tools/autotools/m4 --install
 
 SUBDIRS =					\
 	lkc					\
-	packrules				\
 	tools					\
 	docs
 
