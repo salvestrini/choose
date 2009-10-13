@@ -30,6 +30,7 @@ scripts =					\
 	whitespace-detect			\
 	gitlog-to-committers			\
 	gittag-to-date				\
+	guards-check				\
 	$(EXTRA_DIST)
 
 ##
@@ -41,7 +42,8 @@ EXTERNAL =                                      \
         $(URL_BU)/fetch.in                      \
         $(URL_BU)/whitespace-detect.in          \
         $(URL_BU)/gitlog-to-committers.in       \
-        $(URL_BU)/gittag-to-date.in
+        $(URL_BU)/gittag-to-date.in		\
+        $(URL_BU)/guards-check.in
 
 update-local: Makefile
 	rm -r -f fetch-dir && \

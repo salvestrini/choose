@@ -51,6 +51,7 @@ Makefile
 /tools/autotools/ylwrap
 
 /tools/maint/fetch
+/tools/maint/whitespace-detect
 /tools/maint/gitlog-to-committers
 /tools/maint/gittag-to-date
-/tools/maint/whitespace-detect
+/tools/maint/guards-check
