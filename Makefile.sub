@@ -29,7 +29,6 @@ do_subst = sed \
   -e 's,[@]PACKAGE_VERSION[@],$(PACKAGE_VERSION),g' \
   -e 's,[@]PACKAGE_URL[@],$(PACKAGE_URL),g' \
   -e 's,[@]VERSION[@],$(VERSION),g' \
-  -e 's,[@]PACKAGE_API[@],$(PACKAGE_API),g' \
   -e 's,[@]PATH_SEPARATOR[@],$(PATH_SEPARATOR),g' \
   -e 's,[@]PERL[@],$(PERL),g' \
   -e 's,[@]SHELL[@],$(SHELL),g' \
