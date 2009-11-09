@@ -2,7 +2,7 @@
  * Copyright (C) 2002 Roman Zippel <zippel@linux-m68k.org>
  * Released under the terms of the GNU GPL v2.0.
  *
- * Adapted to the Hybrid kernel build environment by Francesco Salvestrini
+ * Adapted by Francesco Salvestrini
  */
 
 #include <sys/stat.h>

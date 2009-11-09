@@ -1,7 +1,7 @@
 # Process this file with autoconf to produce a configure script.
 
 #
-# configure.ac for Hybrid kernel
+# configure.ac
 #
 # Copyright (C) 2008, 2009 Francesco Salvestrini
 #
