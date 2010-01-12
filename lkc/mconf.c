@@ -931,17 +931,23 @@ static void winch_handler(int sig)
 
 int main(int ac, char **av)
 {
+#if 0
 	struct symbol *sym;
+#endif
 	char *mode;
 	int stat;
 
 	conf_parse(av[1]);
 	conf_read(NULL);
 
+#if 0
 	sym = sym_lookup("VERSION", 0);
 	sym_calc_value(sym);
 	snprintf(menu_backtitle, 128, "Kernel v%s Configuration",
 		sym_get_string_value(sym));
+#else
+	snprintf(menu_backtitle, 128, "Configuration");
+#endif
 
 	mode = getenv("MENUCONFIG_MODE");
 	if (mode) {
@@ -961,21 +967,13 @@ int main(int ac, char **av)
 	init_dialog();
 	do {
 		stat = dialog_yesno(NULL,
-				    "Do you wish to save your new kernel configuration?", 5, 60);
+				    "Do you wish to save your new configuration?", 5, 60);
 	} while (stat < 0);
 	end_dialog();
 
 	if (stat == 0) {
 		conf_write(NULL);
-#if 0
-		printf("\n\n"
-			"*** End of kernel configuration.\n"
-			"*** Check the top-level Makefile for additional configuration options.\n\n");
-#endif
-	} else {
-#if 0
-		printf("\n\nYour kernel configuration changes were NOT saved.\n\n");
-#endif
 	}
+
 	return 0;
 }
