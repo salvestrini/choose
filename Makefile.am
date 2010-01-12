@@ -41,7 +41,8 @@ SUBDIRS =					\
 EXTRA_DIST +=					\
 	README COPYING INSTALL THANKS		\
 	bootstrap .bootstrap			\
-	choose.sh.in
+	choose.sh.in				\
+	choose2h.sh.in
 
 scripts =					\
 	choose
@@ -67,7 +68,12 @@ header_sh  = { echo "\#! @SHELL@" ; echo "" ; }
 footer_sh  = { echo "" ; }
 
 bin_SCRIPTS =					\
-	choose
+	choose					\
+	choose2h
+
+##
+## choose
+##
 
 choose.sh: Makefile choose.sh.in
 	INFILE=choose.sh.in ;			\
@@ -81,6 +87,25 @@ choose: Makefile choose.sh
 	OUTFILE=choose ;			\
 	$(transform_sh_2_script) ||		\
 	{ rm -f $$OUTFILE ; exit 1 ; }
+CLEANFILES += choose
+
+##
+## choose2h
+##
+
+choose2h.sh: Makefile choose2h.sh.in
+	INFILE=choose2h.sh.in ;			\
+	OUTFILE=choose2h.sh ;			\
+	$(transform_sh_in_2_sh) ||		\
+	{ rm -f $$OUTFILE ; exit 1 ; }
+CLEANFILES += choose2h.sh
+
+choose2h: Makefile choose2h.sh
+	INFILE=choose2h.sh ;			\
+	OUTFILE=choose2h ;			\
+	$(transform_sh_2_script) ||		\
+	{ rm -f $$OUTFILE ; exit 1 ; }
+CLEANFILES += choose2h
 
 ##
 ## Maintainer related targets

@@ -25,6 +25,8 @@ Makefile
 
 /choose
 /choose.sh
+/choose2h
+/choose2h.sh
 
 /lkc/choose-text
 /lkc/choose-ncurses
@@ -51,7 +53,10 @@ Makefile
 /tools/autotools/ylwrap
 
 /tools/maint/fetch
+/tools/maint/wordwrap-detect
 /tools/maint/whitespace-detect
 /tools/maint/gitlog-to-committers
 /tools/maint/gittag-to-date
+/.releases
+/tools/maint/releases-to-news
 /tools/maint/guards-check
