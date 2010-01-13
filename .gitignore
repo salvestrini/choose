@@ -24,9 +24,8 @@ Makefile
 /config.status
 
 /choose
-/choose.sh
 /choose2h
-/choose2h.sh
+/choose2python
 
 /lkc/choose-text
 /lkc/choose-ncurses

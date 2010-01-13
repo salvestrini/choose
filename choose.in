@@ -1,5 +1,8 @@
+#! @SHELL@
+# -*- sh -*-
+
 #
-# choose2h.sh.in
+# choose
 #
 # Copyright (C) 2008, 2009 Francesco Salvestrini
 #
@@ -19,13 +22,16 @@
 #
 
 # Script variables
-PROGRAM_NAME="choose2h"
+PROGRAM_NAME="choose"
 PROGRAM_VERSION="@PACKAGE_VERSION@"
 
 ME=$PROGRAM_NAME
 
 INFILE=""
 OUTFILE=""
+RULESFILE=""
+MODE=""
+TOOLSPATH=""
 
 WARNING=1
 DEBUG=0
@@ -66,16 +72,20 @@ help ()
 {
     echo "Usage: $PROGRAM_NAME [OPTIONS]"
     echo
-    echo "Transform choose output file into a C/C++ header file"
+    echo "Configure software interactively"
     echo
-    echo "  -i <ARG>    Set input file"
-    echo "  -o <ARG>    Set output file"
+    echo "  -i <ARG>    Set input configuration file"
+    echo "  -o <ARG>    Set output configuration file"
+    echo "  -r <ARG>    Set rules file"
+    echo "  -m <ARG>    Set mode"
     echo "  -w          Enable warnings output"
     echo "  -f          Warnings become fatal"
     echo "  -v          Enable verbose output"
     echo "  -d          Enable debugging"
     echo "  -V          Print program version"
     echo "  -h          Display this help and exit"
+    echo
+    echo "mode is one of: text, curses"
     echo
     echo "Report bugs to <@PACKAGE_BUGREPORT@>"
 }
@@ -113,6 +123,8 @@ while true
   case $1 in
       -i) shift ; INFILE=$1     ; debug "Got \"$1\"" ;;
       -o) shift ; OUTFILE=$1    ; debug "Got \"$1\"" ;;
+      -r) shift ; RULESFILE=$1  ; debug "Got \"$1\"" ;;
+      -m) shift ; MODE=$1       ; debug "Got \"$1\"" ;;
       -w) WARNING=1                                  ;;
       -f) FATAL=1                                    ;;
       -v) VERBOSE=1                                  ;;
@@ -136,12 +148,65 @@ if test x"$OUTFILE" = x"" ; then
     hint "Missing output configuration file"
     exit 1
 fi
+if test x"$RULESFILE" = x"" ; then
+    hint "Missing rules file"
+    exit 1
+fi
+if test x"$MODE" = x"" ; then
+    hint "Missing mode"
+    exit 1
+fi
+
+case $MODE in
+    text)    EXECUTABLE="@bindir@/choose-text"    ;;
+    ncurses) EXECUTABLE="@bindir@/choose-ncurses" ;;
+    *)      error "Unknown mode $MODE" ; exit 1 ;;
+esac
+
+if test ! -f "$EXECUTABLE" ; then
+    error "Missing $EXECUTABLE file ..."
+    exit 1
+fi
 
 debug "Input file:  $INFILE"
 debug "Output file: $OUTFILE"
+debug "Rules file:  $RULESFILE"
+debug "Mode:        $MODE"
 
-@GREP@ $INFILE "=" | @SED@
+rm -f .config
+rm -f .config.old
 
-debug "Output file $OUTFILE wrote successfully"
+if test -f $INFILE ; then
+    cp -f $INFILE .config
+else
+    warning "Missing $INFILE, starting from scratch ..."
+    touch .config
+fi
+if test ! -f .config ; then
+    error "Cannot create temp file ..."
+    exit 1
+fi
+
+if test ! -f $RULESFILE ; then
+    error "Cannot find $RULESFILE ..."
+    exit 2
+fi
+
+$EXECUTABLE $RULESFILE || {
+    error "Problems running $EXECUTABLE"
+    rm -f .config
+    rm -f .config.old
+    exit 1
+}
+
+rm -f .config.old
+mv .config $OUTFILE
+if test ! -f $OUTFILE ; then
+    error "Cannot write on $OUTFILE ..."
+    rm -f .config
+    exit 1
+fi
+
+debug "Configuration file $OUTFILE wrote successfully"
 
 exit 0

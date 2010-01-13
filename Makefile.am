@@ -41,8 +41,9 @@ SUBDIRS =					\
 EXTRA_DIST +=					\
 	README COPYING INSTALL THANKS		\
 	bootstrap .bootstrap			\
-	choose.sh.in				\
-	choose2h.sh.in
+	choose.in				\
+	choose2h.in				\
+	choose2python.in
 
 scripts =					\
 	choose
@@ -51,61 +52,43 @@ all-local: $(scripts)
 
 CLEANFILES += $(scripts)
 
-sh_lib_SRC  = $(top_builddir)/tools/libs/sh/lib.sh
-
-transform_sh_in_2_sh =				\
-	{ { $(header_sh) &&			\
-	    cat $(srcdir)/$$INFILE &&		\
-	    $(footer_sh) } |			\
-	    $(protect_sh) > $$OUTFILE ; } 
-
-transform_sh_2_script =					\
-	{ cat $$INFILE | $(do_subst) > $$OUTFILE &&	\
-	  chmod +x $$OUTFILE ; }
-
-protect_sh = { cat ; }
-header_sh  = { echo "\#! @SHELL@" ; echo "" ; }
-footer_sh  = { echo "" ; }
-
 bin_SCRIPTS =					\
 	choose					\
-	choose2h
+	choose2h				\
+	choose2python
 
-##
-## choose
-##
+choose: $(srcdir)/choose.in Makefile
+	( rm -f $@ $@.tmp && \
+	  $(do_subst) < $(srcdir)/choose.in > $@.tmp && \
+	  chmod +x $@.tmp && \
+	  chmod a-w $@.tmp && \
+	  mv -f $@.tmp $@ ) || { \
+	        rm -f $@ $@.tmp ; \
+	        exit 1 ; \
+	}
+EXTRA_DIST += choose.in
 
-choose.sh: Makefile choose.sh.in
-	INFILE=choose.sh.in ;			\
-	OUTFILE=choose.sh ;			\
-	$(transform_sh_in_2_sh) ||		\
-	{ rm -f $$OUTFILE ; exit 1 ; }
-CLEANFILES += choose.sh
+choose2h: $(srcdir)/choose2h.in Makefile
+	( rm -f $@ $@.tmp && \
+	  $(do_subst) < $(srcdir)/choose2h.in > $@.tmp && \
+	  chmod +x $@.tmp && \
+	  chmod a-w $@.tmp && \
+	  mv -f $@.tmp $@ ) || { \
+	        rm -f $@ $@.tmp ; \
+	        exit 1 ; \
+	}
+EXTRA_DIST += choose2h.in
 
-choose: Makefile choose.sh
-	INFILE=choose.sh ;			\
-	OUTFILE=choose ;			\
-	$(transform_sh_2_script) ||		\
-	{ rm -f $$OUTFILE ; exit 1 ; }
-CLEANFILES += choose
-
-##
-## choose2h
-##
-
-choose2h.sh: Makefile choose2h.sh.in
-	INFILE=choose2h.sh.in ;			\
-	OUTFILE=choose2h.sh ;			\
-	$(transform_sh_in_2_sh) ||		\
-	{ rm -f $$OUTFILE ; exit 1 ; }
-CLEANFILES += choose2h.sh
-
-choose2h: Makefile choose2h.sh
-	INFILE=choose2h.sh ;			\
-	OUTFILE=choose2h ;			\
-	$(transform_sh_2_script) ||		\
-	{ rm -f $$OUTFILE ; exit 1 ; }
-CLEANFILES += choose2h
+choose2python: $(srcdir)/choose2python.in Makefile
+	( rm -f $@ $@.tmp && \
+	  $(do_subst) < $(srcdir)/choose2python.in > $@.tmp && \
+	  chmod +x $@.tmp && \
+	  chmod a-w $@.tmp && \
+	  mv -f $@.tmp $@ ) || { \
+	        rm -f $@ $@.tmp ; \
+	        exit 1 ; \
+	}
+EXTRA_DIST += choose2python.in
 
 ##
 ## Maintainer related targets

@@ -30,7 +30,7 @@ AC_INIT([Choose],
 AC_PREREQ(2.64)
 
 # Place/find all autotools related files in the following directories
-AC_CONFIG_SRCDIR([choose.sh.in])
+AC_CONFIG_SRCDIR([choose.in])
 AC_CONFIG_AUX_DIR([tools/autotools])
 AC_CONFIG_MACRO_DIR([tools/autotools/m4])
 AC_CONFIG_HEADERS([lkc/config.h])
