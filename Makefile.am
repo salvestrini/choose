@@ -45,17 +45,14 @@ EXTRA_DIST +=					\
 	choose2h.in				\
 	choose2python.in
 
-scripts =					\
-	choose
-
-all-local: $(scripts)
-
-CLEANFILES += $(scripts)
-
 bin_SCRIPTS =					\
 	choose					\
 	choose2h				\
 	choose2python
+
+all-local: $(bin_SCRIPTS)
+
+CLEANFILES += $(bin_SCRIPTS)
 
 choose: $(srcdir)/choose.in Makefile
 	( rm -f $@ $@.tmp && \
