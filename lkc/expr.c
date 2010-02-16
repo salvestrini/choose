@@ -1080,7 +1080,8 @@ void expr_print(struct expr *e, void (*fn)(void *, const char *), void *data, in
 
 static void expr_print_file_helper(void *data, const char *str)
 {
-	fwrite(str, strlen(str), 1, data);
+	size_t t;
+        t = fwrite(str, strlen(str), 1, data);
 }
 
 void expr_fprint(struct expr *e, FILE *out)

@@ -405,9 +405,10 @@ int conf_write(const char *name)
 					do {
 						l = strcspn(str, "\"\\");
 						if (l) {
-							fwrite(str, l, 1, out);
+                                                        size_t t;
+							t = fwrite(str, l, 1, out);
 							if (out_h)
-								fwrite(str, l, 1, out_h);
+								t = fwrite(str, l, 1, out_h);
 						}
 						str += l;
 						while (*str == '\\' || *str == '"') {

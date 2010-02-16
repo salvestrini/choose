@@ -733,10 +733,11 @@ static void conf(struct menu *menu)
 
 static void show_textbox(const char *title, const char *text, int r, int c)
 {
-	int fd;
+	int     fd;
+        ssize_t t;
 
 	fd = creat(".help.tmp", 0777);
-	write(fd, text, strlen(text));
+	t  = write(fd, text, strlen(text));
 	close(fd);
 	show_file(".help.tmp", title, r, c);
 	unlink(".help.tmp");
