@@ -27,7 +27,7 @@ AC_INIT([Choose],
         [...])
 
 # Check for a recent version of autoconf
-AC_PREREQ(2.64)
+AC_PREREQ(2.65)
 
 # Place/find all autotools related files in the following directories
 AC_CONFIG_SRCDIR([choose.in])
@@ -43,7 +43,7 @@ AC_CANONICAL_TARGET
 # For automake options (AM_INIT_AUTOMAKE options) see Makefile.am
 # file, AUTOMAKE_OPTIONS variable
 #
-AM_INIT_AUTOMAKE([1.10 foreign no-installman no-installinfo -Wall nostdinc color-tests])
+AM_INIT_AUTOMAKE([1.11.1 foreign no-installman no-installinfo -Wall nostdinc color-tests])
 
 #
 # Checks for needed programs
